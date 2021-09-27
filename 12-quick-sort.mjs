@@ -10,27 +10,37 @@
     todo o vetor esteja ordenado.
 */
 
+let pass = 0, comps = 0, trocas = 0
+
 function quickSort(vetor, ini = 0, fim = vetor.length - 1) {
-    
+
     // Só trabalhamos se a região do vetor tiver, pelo menos, 2 elementos
     if(fim <= ini) return  // Condição de saída
+
+    pass++
 
     const pivot = fim
     let div = ini - 1
 
     // For indo da posição ini até fim - 1
     for(let i = ini; i < fim; i++) {
+        comps++
         if(vetor[pivot] > vetor[i]) {
             div++
-            if(div !== i) [ vetor[i], vetor[div] ] = [ vetor[div], vetor[i] ]
+            if(div !== i) {
+                [ vetor[i], vetor[div] ] = [ vetor[div], vetor[i] ]
+                trocas++
+            }
         }
     }
 
     div++
 
     // Colocamos o pivô em seu lugar definitivo
+    comps++
     if(vetor[div] > vetor[pivot] && div !== pivot) {
         [ vetor[div], vetor[pivot] ] = [ vetor[pivot], vetor[div] ]
+        trocas++
     }
 
     // Chama o Quick Sort para o subvetor à esquerda do pivô
@@ -47,3 +57,18 @@ let nums = [ 77, 44, 22, 33, 99, 55, 88, 0, 66, 11 ]
 quickSort(nums)
 
 console.log(nums)
+console.log({pass, comps, trocas})
+
+/*********************************************************************** */
+
+import { nomes } from './data/nomes-desord.mjs'
+
+pass = 0, comps = 0, trocas = 0
+
+console.time('Tempo de ordenação')
+quickSort(nomes)
+let memoriaMB = process.memoryUsage().heapUsed / 1024 / 1024
+console.timeEnd('Tempo de ordenação')
+
+console.log(nomes)
+console.log({pass, comps, trocas, memoriaMB})
